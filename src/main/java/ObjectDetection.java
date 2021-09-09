@@ -19,8 +19,8 @@ public class ObjectDetection {
 
     public static void main(String[] args) throws IOException, ModelException, TranslateException {
         //String url = "https://github.com/awslabs/djl/raw/master/examples/src/test/resources/dog_bike_car.jpg";
-        BufferedImage img = BufferedImageUtils.fromFile(Paths.get("frames/3.png"));
-
+        BufferedImage img = BufferedImageUtils.fromFile(Paths.get("src/main/java/frames/3.png"));
+        //System.out.println(System.getProperty("user.dir"));
         Criteria<BufferedImage, DetectedObjects> criteria =
                 Criteria.builder()
                         .optApplication(Application.CV.OBJECT_DETECTION)
