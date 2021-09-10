@@ -6,21 +6,23 @@ import ai.djl.repository.zoo.Criteria;
 import ai.djl.repository.zoo.ModelZoo;
 import ai.djl.repository.zoo.ZooModel;
 import ai.djl.training.util.ProgressBar;
-import ai.djl.translate.TranslateException;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.io.File;
 import java.nio.file.Paths;
 
 public class ObjectDetection {
 
 
 
-    public static void main(String[] args) throws IOException, ModelException, TranslateException {
-        //String url = "https://github.com/awslabs/djl/raw/master/examples/src/test/resources/dog_bike_car.jpg";
-        BufferedImage img = BufferedImageUtils.fromFile(Paths.get("src/main/java/frames/3.png"));
-        //System.out.println(System.getProperty("user.dir"));
+    public static void main(String[] args)  {
+        //Create Directory to video frames.
+        File file=new File("src/main/java/frames/");
+        // Store picture names in  array
+        String [] frameFiles=file.list();
+
+
+        //Configure deep java library for object detection
         Criteria<BufferedImage, DetectedObjects> criteria =
                 Criteria.builder()
                         .optApplication(Application.CV.OBJECT_DETECTION)
@@ -29,11 +31,30 @@ public class ObjectDetection {
                         .optProgress(new ProgressBar())
                         .build();
 
-        try (ZooModel<BufferedImage, DetectedObjects> model = ModelZoo.loadModel(criteria)) {
-            try (Predictor<BufferedImage, DetectedObjects> predictor = model.newPredictor()) {
-                DetectedObjects detection = predictor.predict(img);
-                System.out.println(detection);
+        //Load pre-trained model.
+        ZooModel<BufferedImage, DetectedObjects> model = null;
+        try {
+            model = ModelZoo.loadModel(criteria);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //Create predictor object
+        Predictor<BufferedImage, DetectedObjects> predictor = model.newPredictor();
+        DetectedObjects detection=null;
+        BufferedImage img = null;
+
+        //Loop through each picture and use model to detect the objects present in each
+        for (String frame:frameFiles) {
+            try {
+                //load image
+                img = BufferedImageUtils.fromFile(Paths.get("src/main/java/frames/"+frame));
+
+                detection = predictor.predict(img);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+            System.out.println(detection);
         }
     }
 }
