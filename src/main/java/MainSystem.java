@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 public class MainSystem {
     private static long thresholdMemoryUsage = 0;
     private static  ScheduledExecutorService meomryCheckScheduler = Executors.newSingleThreadScheduledExecutor();
+    private static FaultLogger faultLogger = null;
 
     private static void setMemoryThresholdForNotification(int threshold){
         MemoryMXBean memBean = ManagementFactory.getMemoryMXBean() ;
@@ -24,7 +25,9 @@ public class MainSystem {
         long currentUsedMemory = heapMemoryUsage.getUsed();
         if(currentUsedMemory>thresholdMemoryUsage){
             int percentage = (int)((100*heapMemoryUsage.getUsed())/heapMemoryUsage.getMax());
-            System.out.println("Heartbeat >> " + currentUsedMemory + " >> " + percentage + "%");
+            String output = "Heartbeat >> " + currentUsedMemory + " >> " + percentage + "%";
+            System.out.println(output);
+            faultLogger.logFault(output);
         }
     }
 
@@ -39,6 +42,7 @@ public class MainSystem {
     }
 
     public static void main(String[] args)  {
+        faultLogger = new FaultLogger();
         setMemoryThresholdForNotification(50);
         runMemoryLogger();
         //Create Directory to video frames.
@@ -47,7 +51,7 @@ public class MainSystem {
         String [] frameFiles=file.list();
         ObjectDetectionSystem detectionSystem=new ObjectDetectionSystem();
         detectionSystem.configure();
-
+        //
         for (String frame:frameFiles) {
 
             detectionSystem.detect(Paths.get("src/main/java/frames/"+frame));
