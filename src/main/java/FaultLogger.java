@@ -12,11 +12,12 @@ public class FaultLogger {
     //create a timestamped file, and write the provided log content to it
     //returns true if successful, false if a file or IO error occurs
     public boolean logFault(String input){
+        File logFile;
         try {
             String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
             String fileName = timeStamp + "_memoryFault.txt";
 
-            File logFile = new File(fileName);
+            logFile = new File(fileName);
             if (logFile.createNewFile()) {
                 //System.out.println("File created: " + logFile.getName());
             } else {
@@ -28,7 +29,7 @@ public class FaultLogger {
             return false;
         }
         try {
-            FileWriter logWriter = new FileWriter("filename.txt");
+            FileWriter logWriter = new FileWriter(logFile);
             logWriter.write(input);
             logWriter.close();
         } catch (IOException e) {
