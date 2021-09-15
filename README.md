@@ -4,3 +4,7 @@ Package Build & Run Instructions
 2.	We are using gradle as our build tool, Apply the gradle settings included in the package to run build the application successfully.
 3.	Run the ‘MainSystem’ method to execute the program.
 4. 	Once you stop executing the program the output files are stored with the timestamps of the collision in the main folder of the program.
+
+Frameworks Used:
+Deep Java Library
+Pytorch
