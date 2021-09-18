@@ -20,8 +20,7 @@ public class ObjectDetectionSystem {
     private static int currentIteration = 1;
 
 
-    public  void configure()
-    {
+    public void configure() {
         Criteria<BufferedImage, DetectedObjects> criteria =
                 Criteria.builder()
                         .optApplication(Application.CV.OBJECT_DETECTION)
@@ -40,9 +39,8 @@ public class ObjectDetectionSystem {
         this.predictor = model.newPredictor();
     }
 
-    public  void detect(Path path)
-    {
-        DetectedObjects detection=null;
+    public void detect(Path path) {
+        DetectedObjects detection = null;
         BufferedImage img = null;
         try {
             //load image
@@ -54,7 +52,7 @@ public class ObjectDetectionSystem {
         }
         System.out.println(detection);
     }
-    
+
     public void loadLargeImage(){
         Path path = Paths.get("src/main/java/frames/big_image.jpg");
         try {
@@ -78,3 +76,6 @@ public class ObjectDetectionSystem {
         }
     }
 }
+
+    
+    

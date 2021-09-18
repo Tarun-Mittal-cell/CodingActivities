@@ -35,8 +35,8 @@ public class MainSystem {
         meomryCheckScheduler.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
+                 printMemory();
 
-                printMemory();
             }
         }, 0, 1, TimeUnit.SECONDS);
     }
@@ -44,7 +44,8 @@ public class MainSystem {
     public static void main(String[] args)  {
         faultLogger = new FaultLogger();
         setMemoryThresholdForNotification(50);
-        runMemoryLogger();
+
+
         //Create Directory to video frames.
         File file=new File("src/main/java/frames/");
         // Store picture names in  array
