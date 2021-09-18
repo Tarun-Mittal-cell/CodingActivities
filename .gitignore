@@ -10,6 +10,7 @@ gradle-app.setting
 
 # Cache of project
 .gradletasknamecache
+.gradle
 .gradle/buildOutputCleanup/buildOutputCleanup.lock
 .gradle/buildOutputCleanup/buildOutputCleanup.lock
 .gradle/buildOutputCleanup/buildOutputCleanup.lock
