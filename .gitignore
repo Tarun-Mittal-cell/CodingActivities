@@ -10,3 +10,22 @@ gradle-app.setting
 
 # Cache of project
 .gradletasknamecache
+.gradle/buildOutputCleanup/buildOutputCleanup.lock
+.gradle/buildOutputCleanup/buildOutputCleanup.lock
+.gradle/buildOutputCleanup/buildOutputCleanup.lock
+.gradle/buildOutputCleanup/cache.properties
+.gradle/buildOutputCleanup/outputFiles.bin
+.idea/gradle.xml
+.idea/misc.xml
+.idea/workspace.xml
+build/classes/java/main/FaultLogger.class
+build/classes/java/main/MainSystem$1.class
+build/classes/java/main/MainSystem.class
+gradlew
+gradle/wrapper/gradle-wrapper.properties
+build/tmp/compileJava/source-classes-mapping.txt
+build/classes/java/main/ObjectDetectionSystem.class
+build/classes/java/main/ObjectDetectionSystem$1.class
+build/classes/java/main/MainSystem.class
+build/classes/java/main/MainSystem$1.class
+build/classes/java/main/FaultLogger.class
