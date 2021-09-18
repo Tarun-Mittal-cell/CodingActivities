@@ -52,10 +52,9 @@ public class MainSystem {
         ObjectDetectionSystem detectionSystem=new ObjectDetectionSystem();
         detectionSystem.configure();
         //
-        for (String frame:frameFiles) {
-
+        for (String frame:frameFiles)
+        {
             detectionSystem.detect(Paths.get("src/main/java/frames/"+frame));
-            
         }
         meomryCheckScheduler.shutdownNow();
     }
