@@ -12,7 +12,7 @@ public class MainServer {
 
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis();
-        long runTime = 5000; //number of seconds before a graceful shutdown of the whole system
+        long runTime = 50000; //number of seconds before a graceful shutdown of the whole system
 
         String line;
         BufferedReader reader=null;
@@ -59,6 +59,7 @@ public class MainServer {
         processManager.initProcessB(1);
         //processManager.endAllProcesses();
         //Create server socket for game.
+        List<ClientHandler> handlers = new ArrayList<ClientHandler>();
         ServerSocket serverSocket= null;
         try {
             serverSocket = new ServerSocket(6355);
@@ -76,8 +77,9 @@ public class MainServer {
                 OutputStream outputStream = client.getOutputStream();
                 ClientHandler clientHandler = new ClientHandler(client, inputStream, outputStream);
                 clientHandler.start();
+                handlers.add(clientHandler);
             }
-            System.out.println("DINDINDINWDINDWINDWIN");
+            System.out.println("Ending Server");
         }
         catch (IOException e)
         {
@@ -85,6 +87,11 @@ public class MainServer {
         } finally {
             try{
                 serverSocket.close();
+                for (ClientHandler c: handlers
+                     ) {
+                    c.interrupt();
+                }
+
                 processManager.endAllProcesses();
             }catch (IOException e)
             {
