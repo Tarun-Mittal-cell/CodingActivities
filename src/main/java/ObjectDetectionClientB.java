@@ -8,7 +8,8 @@ public class ObjectDetectionClientB {
     private static int counter = 1;
 
     public static void main(String[] args) {
-        //FaultLogger faultLogger = new FaultLogger();
+        long startTime = System.currentTimeMillis();
+        long runTime = 25000; //number of seconds before a graceful shutdown of the whole system
 
         Thread thread = new Thread(new Runnable() {
             @Override

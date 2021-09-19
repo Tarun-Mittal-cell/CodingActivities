@@ -11,6 +11,9 @@ public class MainServer {
     public static ProcessManager processManager;
 
     public static void main(String[] args) {
+        long startTime = System.currentTimeMillis();
+        long runTime = 5000; //number of seconds before a graceful shutdown of the whole system
+
         String line;
         BufferedReader reader=null;
         PrintWriter printWriter=null;
@@ -23,7 +26,7 @@ public class MainServer {
             public void run() {
                 long  timeElapsed1=0;
                 long  timeElapsed2=0;
-                while (true)
+                while (System.currentTimeMillis() - startTime < runTime)
                 {
                     timeElapsed1=System.currentTimeMillis() - Control.lastMessage1;
                     // System.out.println(Thread.currentThread().getName() + " Elapsed Time System 1: " + Control.lastMessage1);
@@ -51,10 +54,10 @@ public class MainServer {
         });
 
         thread.start();
-
+        //thread.interrupt();
         processManager.initProcessA(0);
         processManager.initProcessB(1);
-
+        //processManager.endAllProcesses();
         //Create server socket for game.
         ServerSocket serverSocket= null;
         try {
@@ -62,7 +65,7 @@ public class MainServer {
 
             System.out.println("Listening for connections.....");
             //Accept communication on socket
-            while (true) {
+            while (System.currentTimeMillis() - startTime < runTime) {
                 client = serverSocket.accept();
                 System.out.println("Connection established....");
 
@@ -74,13 +77,24 @@ public class MainServer {
                 ClientHandler clientHandler = new ClientHandler(client, inputStream, outputStream);
                 clientHandler.start();
             }
+            System.out.println("DINDINDINWDINDWINDWIN");
         }
         catch (IOException e)
         {
             e.printStackTrace();
+        } finally {
+            try{
+                serverSocket.close();
+                processManager.endAllProcesses();
+            }catch (IOException e)
+            {
+                e.printStackTrace();
+            }
         }
 
         //manage the processes for active redundancy
+        //thread.interrupt();
+        //processManager.endAllProcesses();
 
     }
 }

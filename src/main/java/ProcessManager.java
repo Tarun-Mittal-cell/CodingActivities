@@ -7,11 +7,16 @@ public class ProcessManager {
     private Process[] processes;
 
     public ProcessManager(){
-        processes = new Process[2];
+        processes = new Process[]{ null, null};
     }
 
     public void initProcessA(int index){
-
+        if(processes[index] != null){
+            if(processes[index].isAlive()){
+                processes[index].destroyForcibly();
+                processes[index] = null;
+            }
+        }
         try {
             String javaHome = System.getProperty("java.home");
             String javaBin = javaHome + File.separator + "bin" + File.separator + "java";
@@ -36,6 +41,12 @@ public class ProcessManager {
     }
 
     public void initProcessB(int index){
+        if(processes[index] != null){
+            if(processes[index].isAlive()){
+                processes[index].destroyForcibly();
+                processes[index] = null;
+            }
+        }
         try {
             String javaHome = System.getProperty("java.home");
             String javaBin = javaHome + File.separator + "bin" + File.separator + "java";
@@ -55,6 +66,18 @@ public class ProcessManager {
             processes[index] = process;
         } catch (IOException e){
             System.out.println(e.toString());
+        }
+    }
+
+    public void endAllProcesses(){
+        System.out.println("ending things");
+        for(int index = 0; index < processes.length; index++){
+            if(processes[index] != null){
+                if(processes[index].isAlive()){
+                    processes[index].destroyForcibly();
+                    processes[index] = null;
+                }
+            }
         }
     }
 }
