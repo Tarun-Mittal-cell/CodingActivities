@@ -1,7 +1,4 @@
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+package main.java;
 
 import ai.djl.Application;
 import ai.djl.inference.Predictor;
@@ -13,9 +10,18 @@ import ai.djl.repository.zoo.ZooModel;
 import ai.djl.training.util.ProgressBar;
 import ai.djl.translate.TranslateException;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+
 public class ObjectDetectionSystem {
 
     private Predictor<BufferedImage, DetectedObjects> predictor;
+    public static Boolean error = false;
+    private List<Thread> threadList = new ArrayList<>();
 
     private static int currentIteration = 1;
 
@@ -53,26 +59,43 @@ public class ObjectDetectionSystem {
         System.out.println(detection);
     }
 
+
+
     public void loadLargeImage(){
         Path path = Paths.get("src/main/java/frames/big_image.jpg");
         try {
             for(int i=0; i<currentIteration; i++) {
-                Thread t = new Thread(){
-                    @Override
-                    public void run(){
-                        try {
-                            BufferedImage img = BufferedImageUtils.fromFile(path);
-                            MainSystem.printMemory();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                };
+                if(error){
+                    return;
+                }
+                Thread t = new LoaderThread(path);
+                threadList.add(t);
                 t.start();
             }
             currentIteration = currentIteration*2;
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    class LoaderThread extends Thread{
+
+        private Path path;
+
+        public LoaderThread(Path path){
+            this.path = path;
+        }
+
+        @Override
+        public void run(){
+            try {
+                BufferedImage img = BufferedImageUtils.fromFile(path);
+                MainSystem.printMemory();
+                System.out.println("--done--");
+            }
+            catch (Exception e){
+                error = true;
+            }
         }
     }
 }

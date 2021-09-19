@@ -1,31 +1,35 @@
+package main.java;
+
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.file.Paths;
 
-public class ObjectDetectionClient2 {
+public class ObjectDetectionClientA {
+    private static int counter = 1;
 
-    public static void main(String[] args)  {
+    public static void main(String[] args) {
         //FaultLogger faultLogger = new FaultLogger();
 
-        Thread thread   = new Thread(new Runnable() {
+        Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                InetAddress local= null;
-                PrintWriter printWriter=null;
-                BufferedReader reader=null;
-                Socket socket=null;
+                InetAddress local = null;
+                PrintWriter printWriter = null;
+                BufferedReader reader = null;
+                Socket socket = null;
                 try {
                     local = InetAddress.getLocalHost();
                 } catch (UnknownHostException e) {
                     e.printStackTrace();
+                    return;
                 }
                 try {
                     //Create client socket
                     System.out.println(local.getHostName());
                     socket = new Socket(local.getHostName(), 6355);
-                    System.out.println(local.getHostName()+" : "+socket.getLocalPort());
+                    System.out.println(local.getHostName() + " : " + socket.getLocalPort());
                     //Create output stream to send information to the game server
                     OutputStream outputStream = socket.getOutputStream();
                     OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
@@ -37,9 +41,15 @@ public class ObjectDetectionClient2 {
                     InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
                     reader = new BufferedReader(inputStreamReader);
 
+                    int threadNumber = counter;
+                    counter++;
+                    int maxInterationCount = 10;
+                    int iterationCount = 0;
                     while (true)
                     {
-                        printWriter.println("2 Alive");
+                        iterationCount++;
+                        printWriter.println("1 Alive");
+
                         try {
                             Thread.sleep(2000);
                         }
@@ -47,13 +57,21 @@ public class ObjectDetectionClient2 {
                         {
                             e.printStackTrace();
                         }
+                        if(ObjectDetectionSystem.error){
+                            if(iterationCount == maxInterationCount) {
+                                printWriter.println("ERROR: " + threadNumber);
+                                break;
+                            }
+                        }
 
                     }
-                }
-                catch (IOException e)
-                {
+                    System.out.println("Client TERMINATED: " + threadNumber);
+                    System.exit(0);
+
+
+                } catch (Exception e) {
                     e.printStackTrace();
-                }  finally {
+                } finally {
                     try {
 
                         if (socket != null) {
@@ -73,12 +91,13 @@ public class ObjectDetectionClient2 {
             }
         });
         thread.start();
-
-        //Create Directory to video frames.
+//
+//        //Create Directory to video frames.
         File file=new File("src/main/java/frames/");
         // Store picture names in  array
         String [] frameFiles=file.list();
         ObjectDetectionSystem detectionSystem=new ObjectDetectionSystem();
+
         detectionSystem.configure();
         //
         for (String frame:frameFiles)

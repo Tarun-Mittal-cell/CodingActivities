@@ -1,21 +1,21 @@
-ClientHandler.java
- ClientHandler
+ObjectDetectionClientA.java
+ main.java.ObjectDetectionClientA
+ main.java.ObjectDetectionClientA$1
 FaultLogger.java
- FaultLogger
+ main.java.FaultLogger
 MainServer.java
- MainServer
- MainServer$1
+ main.java.MainServer
+ main.java.MainServer$1
 Control.java
- Control
-ObjectDetectionClient2.java
- ObjectDetectionClient2
- ObjectDetectionClient2$1
-MainSystem.java
- MainSystem
- MainSystem$1
+ main.java.Control
+ClientHandler.java
+ main.java.ClientHandler
 ObjectDetectionSystem.java
- ObjectDetectionSystem
- ObjectDetectionSystem$1
-ObjectDetectionClient1.java
- ObjectDetectionClient1
- ObjectDetectionClient1$1
+ main.java.ObjectDetectionSystem
+ main.java.ObjectDetectionSystem$LoaderThread
+ObjectDetectionClientB.java
+ main.java.ObjectDetectionClientB
+ main.java.ObjectDetectionClientB$1
+MainSystem.java
+ main.java.MainSystem
+ main.java.MainSystem$1

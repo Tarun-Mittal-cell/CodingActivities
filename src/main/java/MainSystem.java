@@ -1,3 +1,5 @@
+package main.java;
+
 import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
