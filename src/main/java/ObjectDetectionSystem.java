@@ -1,4 +1,3 @@
-package main.java;
 
 import ai.djl.Application;
 import ai.djl.inference.Predictor;
