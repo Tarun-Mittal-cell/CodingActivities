@@ -1,5 +1,3 @@
-package main.java;
-
 import ai.djl.Application;
 import ai.djl.inference.Predictor;
 import ai.djl.modality.cv.output.DetectedObjects;
