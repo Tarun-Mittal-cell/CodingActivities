@@ -47,8 +47,7 @@ public class ObjectDetectionSystem {
         DetectedObjects detection = null;
         BufferedImage img = null;
         try {
-            //load image
-           // loadLargeImage();
+
             img = BufferedImageUtils.fromFile(path);
             detection = predictor.predict(img);
         } catch (IOException | TranslateException e) {
@@ -59,43 +58,6 @@ public class ObjectDetectionSystem {
 
 
 
-    public void loadLargeImage(){
-        Path path = Paths.get("src/main/java/frames/big_image.jpg");
-        try {
-            for(int i=0; i<currentIteration; i++) {
-                if(error){
-                    return;
-                }
-                Thread t = new LoaderThread(path);
-                threadList.add(t);
-                t.start();
-            }
-            currentIteration = currentIteration*2;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    class LoaderThread extends Thread{
-
-        private Path path;
-
-        public LoaderThread(Path path){
-            this.path = path;
-        }
-
-        @Override
-        public void run(){
-            try {
-                BufferedImage img = BufferedImageUtils.fromFile(path);
-                MainSystem.printMemory();
-                //System.out.println("--done--");
-            }
-            catch (Exception e){
-                error = true;
-            }
-        }
-    }
 }
 
     

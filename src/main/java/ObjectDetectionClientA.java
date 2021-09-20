@@ -26,9 +26,7 @@ public class ObjectDetectionClientA {
                 }
                 try {
                     //Create client socket
-                  //  System.out.println(local.getHostName());
                     socket = new Socket(local.getHostName(), 6355);
-                   // System.out.println(local.getHostName() + " : " + socket.getLocalPort());
                     //Create output stream to send information to the game server
                     OutputStream outputStream = socket.getOutputStream();
                     OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
@@ -40,14 +38,8 @@ public class ObjectDetectionClientA {
                     InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
                     reader = new BufferedReader(inputStreamReader);
 
-                    //int threadNumber = counter;
-                    //counter++;
-                    int maxInterationCount = 10;
-                    int iterationCount = 0;
-                    while (true)
+                     while (true)
                     {
-                        iterationCount++;
-                        //System.out.println("Iteration "+iterationCount);
                         printWriter.println("System 1 Alive");
 
                         try {
@@ -57,20 +49,11 @@ public class ObjectDetectionClientA {
                         {
                             e.printStackTrace();
                         }
-                       //if(ObjectDetectionSystem.error){
-                         /*   if(iterationCount == maxInterationCount) {
-                                printWriter.println("ERROR: " + threadNumber);
-
-                                break;
-                            }*/
-                        //}
 
                     }
-                    //System.out.println("Client TERMINATED: " + threadNumber);
-                   // System.exit(0);
 
-
-                } catch (Exception e) {
+                } catch (Exception e)
+                {
                     e.printStackTrace();
                 } finally {
                     try {

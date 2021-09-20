@@ -1,64 +1,112 @@
-import java.io.File;
-import java.lang.management.ManagementFactory;
-import java.lang.management.MemoryMXBean;
-import java.lang.management.MemoryUsage;
-import java.nio.file.Paths;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+
+import javax.management.ObjectName;
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainSystem {
-    private static long thresholdMemoryUsage = 0;
-    private static  ScheduledExecutorService meomryCheckScheduler = Executors.newSingleThreadScheduledExecutor();
-    private static FaultLogger faultLogger = null;
 
-    private static void setMemoryThresholdForNotification(int threshold){
-        MemoryMXBean memBean = ManagementFactory.getMemoryMXBean() ;
-        MemoryUsage heapMemoryUsage = memBean.getHeapMemoryUsage();
-        long maxMemory =  heapMemoryUsage.getMax();
-        thresholdMemoryUsage = (threshold*maxMemory)/100;
-    }
+    public static ProcessManager processManager;
 
-    public static void printMemory() {
-        MemoryMXBean memBean = ManagementFactory.getMemoryMXBean();
-        MemoryUsage heapMemoryUsage = memBean.getHeapMemoryUsage();
-        long currentUsedMemory = heapMemoryUsage.getUsed();
-        if(currentUsedMemory>thresholdMemoryUsage){
-            int percentage = (int)((100*heapMemoryUsage.getUsed())/heapMemoryUsage.getMax());
-           String output = "Heartbeat >> " + currentUsedMemory + " >> " + percentage + "%";
-           System.out.println(output);
-           faultLogger.logFault(output);
-        }
-    }
+    public static void main(String[] args) {
+        long startTime = System.currentTimeMillis();
+        long runTime = 5000; //number of seconds before a graceful shutdown of the whole system
 
-    public static void runMemoryLogger(){
-        meomryCheckScheduler.scheduleAtFixedRate(new Runnable() {
+        String line;
+        BufferedReader reader=null;
+        PrintWriter printWriter=null;
+        Socket client=null;
+
+        processManager = new ProcessManager();
+
+        Thread thread   = new Thread(new Runnable() {
             @Override
             public void run() {
-                 printMemory();
+                long  timeElapsed1=0;
+                long  timeElapsed2=0;
+              //  while (System.currentTimeMillis() - startTime < runTime)
+                while (true)
+                {
+                    timeElapsed1=System.currentTimeMillis() - Control.lastMessage1;
+                    if (timeElapsed1>5000&&Control.lastMessage1!=0 )
+                    {
+                        System.out.println("System 1 Offline.");
+                        System.out.println("Restarting System 1...");
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        processManager.initProcessA(0);
+                    }
 
+                    timeElapsed2=System.currentTimeMillis() - Control.lastMessage2;
+                    if (timeElapsed2>5000&&Control.lastMessage2!=0 )
+                    {
+                        System.out.println("System 2 Offline.");
+                        System.out.println("Restarting System 2...");
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        processManager.initProcessB(1);
+                    }
+
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-        }, 0, 1, TimeUnit.SECONDS);
-    }
+        });
+        thread.setDaemon(true);
+        thread.start();
 
-    public static void main(String[] args)  {
-        faultLogger = new FaultLogger();
-        setMemoryThresholdForNotification(50);
+        processManager.initProcessA(0);
+        processManager.initProcessB(1);
 
+        ServerSocket serverSocket= null;
 
-        //Create Directory to video frames.
-        File file=new File("src/main/java/frames/");
-        // Store picture names in  array
-        String [] frameFiles=file.list();
-        ObjectDetectionSystem detectionSystem=new ObjectDetectionSystem();
-        detectionSystem.configure();
-        //
-        for (String frame:frameFiles)
-        {
-            detectionSystem.detect(Paths.get("src/main/java/frames/"+frame));
+        try {
+            serverSocket = new ServerSocket(6355);
+
+            System.out.println("Listening for connections.....");
+
+            int count=0;
+            while (count!=5)
+            {
+                //Accept communication on socket
+                client = serverSocket.accept();
+                System.out.println("Connection established....");
+                count++;
+
+                //Input stream to read information from client
+                InputStream inputStream = client.getInputStream();
+
+                //Output stream to send information to client
+                OutputStream outputStream = client.getOutputStream();
+                ClientHandler clientHandler = new ClientHandler(client, inputStream, outputStream);
+                clientHandler.start();
+            }
+            processManager.endAllProcesses();
+            System.out.println("Ending Server");
         }
-        meomryCheckScheduler.shutdownNow();
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        } finally {
+            try{
+               serverSocket.close();
+
+            }catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
     }
 }
-
-

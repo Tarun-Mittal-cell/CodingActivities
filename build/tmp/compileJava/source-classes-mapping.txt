@@ -1,21 +1,17 @@
 FaultLogger.java
  FaultLogger
-MainSystem.java
- MainSystem
- MainSystem$1
-ObjectDetectionSystem.java
- ObjectDetectionSystem
- ObjectDetectionSystem$LoaderThread
-Control.java
- Control
 ProcessManager.java
  ProcessManager
+Control.java
+ Control
 MainServer.java
  MainServer
  MainServer$1
 ObjectDetectionClientB.java
  ObjectDetectionClientB
  ObjectDetectionClientB$1
+ObjectDetectionSystem.java
+ ObjectDetectionSystem
 ClientHandler.java
  ClientHandler
 ObjectDetectionClientA.java

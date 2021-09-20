@@ -8,8 +8,6 @@ public class ObjectDetectionClientB {
     private static int counter = 1;
 
     public static void main(String[] args) {
-        long startTime = System.currentTimeMillis();
-        long runTime = 25000; //number of seconds before a graceful shutdown of the whole system
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -40,13 +38,8 @@ public class ObjectDetectionClientB {
                     InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
                     reader = new BufferedReader(inputStreamReader);
 
-                    int threadNumber = counter;
-                    counter++;
-                    int maxInterationCount = 5;
-                    int iterationCount = 0;
-                    while (true)
+                     while (true)
                     {
-                        iterationCount++;
                         printWriter.println("System 2 Alive");
 
                         try {
@@ -56,18 +49,7 @@ public class ObjectDetectionClientB {
                         {
                             e.printStackTrace();
                         }
-//                        if(ObjectDetectionSystem.error){
-//                            if(iterationCount == maxInterationCount) {
-//                                printWriter.println("ERROR: " + threadNumber);
-//                                break;
-//                            }
-//                        }
-
                     }
-//                    System.out.println("Client TERMINATED: " + threadNumber);
-//                    System.exit(0);
-
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -91,8 +73,8 @@ public class ObjectDetectionClientB {
         });
         thread.setDaemon(true);
         thread.start();
-//
-//        //Create Directory to video frames.
+
+        //Create Directory to video frames.
         File file=new File("src/main/java/frames/");
         // Store picture names in  array
         String [] frameFiles=file.list();

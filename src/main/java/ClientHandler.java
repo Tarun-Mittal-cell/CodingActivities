@@ -27,18 +27,7 @@ public class ClientHandler extends Thread {
         String line = null;
         String index=null;
         try {
-            /*line = reader.readLine();
-            String index=line.split(" ")[1];
-            if(index.equals("1"))
-            {
-                Control.lastMessage1 = System.currentTimeMillis();
-            }
-            else
-            {
-                Control.lastMessage2 = System.currentTimeMillis();
-            }*/
-
-            while (!end)
+              while (!end)
             {
                 line = reader.readLine();
                 System.out.println("Client Sent: " + line);
