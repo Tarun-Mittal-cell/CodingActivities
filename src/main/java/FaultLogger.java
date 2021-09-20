@@ -14,8 +14,9 @@ public class FaultLogger {
     public boolean logFault(String input){
         File logFile;
         try {
-            String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-            String fileName = timeStamp + "_memoryFault.txt";
+            //String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+            String timeStamp = new SimpleDateFormat("yyyy.MM.dd").format(new Date());
+            String fileName = timeStamp + "_FaultLog.txt";
 
             logFile = new File(fileName);
             if (logFile.createNewFile()) {
@@ -29,7 +30,7 @@ public class FaultLogger {
             return false;
         }
         try {
-            FileWriter logWriter = new FileWriter(logFile);
+            FileWriter logWriter = new FileWriter(logFile,true);
             logWriter.write(input);
             logWriter.close();
         } catch (IOException e) {

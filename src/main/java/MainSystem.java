@@ -2,6 +2,8 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MainSystem {
 
@@ -14,6 +16,14 @@ public class MainSystem {
         PrintWriter printWriter=null;
         Socket client=null;
 
+        String timeStamp = new SimpleDateFormat("yyyy.MM.dd").format(new Date());
+        String fileName = timeStamp + "_FaultLog.txt";
+        File logFile = new File(fileName);
+        if (logFile.exists())
+        {
+            logFile.delete();
+        }
+
         processManager = new ProcessManager();
 
         Thread thread   = new Thread(new Runnable() {
@@ -21,13 +31,16 @@ public class MainSystem {
             public void run() {
                 long  timeElapsed1=0;
                 long  timeElapsed2=0;
-              //  while (System.currentTimeMillis() - startTime < runTime)
+                String timeStamp;
+                FaultLogger faultLogger=new FaultLogger();
                 while (true)
                 {
                     timeElapsed1=System.currentTimeMillis() - Control.lastMessage1;
                     if (timeElapsed1>5000&&Control.lastMessage1!=0 )
                     {
                         System.out.println("System 1 Offline.");
+                        timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+                        faultLogger.logFault(timeStamp+" System 1 Offline. \n");
                         System.out.println("Restarting System 1...");
                         try {
                             Thread.sleep(1000);
@@ -41,6 +54,8 @@ public class MainSystem {
                     if (timeElapsed2>5000&&Control.lastMessage2!=0 )
                     {
                         System.out.println("System 2 Offline.");
+                        timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+                        faultLogger.logFault(timeStamp+ "System 2 Offline.\n");
                         System.out.println("Restarting System 2...");
                         try {
                             Thread.sleep(1000);
