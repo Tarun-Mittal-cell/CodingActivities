@@ -26,9 +26,9 @@ public class ObjectDetectionClientB {
                 }
                 try {
                     //Create client socket
-                    System.out.println(local.getHostName());
+                   // System.out.println(local.getHostName());
                     socket = new Socket(local.getHostName(), 6355);
-                    System.out.println(local.getHostName() + " : " + socket.getLocalPort());
+                    //System.out.println(local.getHostName() + " : " + socket.getLocalPort());
                     //Create output stream to send information to the game server
                     OutputStream outputStream = socket.getOutputStream();
                     OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
@@ -47,7 +47,7 @@ public class ObjectDetectionClientB {
                     while (true)
                     {
                         iterationCount++;
-                        printWriter.println("2 Alive");
+                        printWriter.println("System 2 Alive");
 
                         try {
                             Thread.sleep(2000);
@@ -89,6 +89,7 @@ public class ObjectDetectionClientB {
 
             }
         });
+        thread.setDaemon(true);
         thread.start();
 //
 //        //Create Directory to video frames.

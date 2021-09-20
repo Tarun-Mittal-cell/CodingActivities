@@ -12,7 +12,7 @@ public class MainServer {
 
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis();
-        long runTime = 50000; //number of seconds before a graceful shutdown of the whole system
+        long runTime = 5000; //number of seconds before a graceful shutdown of the whole system
 
         String line;
         BufferedReader reader=null;
@@ -26,21 +26,32 @@ public class MainServer {
             public void run() {
                 long  timeElapsed1=0;
                 long  timeElapsed2=0;
-                while (System.currentTimeMillis() - startTime < runTime)
+              //  while (System.currentTimeMillis() - startTime < runTime)
+                while (true)
                 {
                     timeElapsed1=System.currentTimeMillis() - Control.lastMessage1;
-                    // System.out.println(Thread.currentThread().getName() + " Elapsed Time System 1: " + Control.lastMessage1);
                     if (timeElapsed1>5000&&Control.lastMessage1!=0 )
                     {
                         System.out.println("System 1 Offline.");
+                        System.out.println("Restarting System 1...");
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                         processManager.initProcessA(0);
                     }
 
                     timeElapsed2=System.currentTimeMillis() - Control.lastMessage2;
-                    //System.out.println(Thread.currentThread().getName() + " Elapsed Time System 2: " + Control.lastMessage2);
                     if (timeElapsed2>5000&&Control.lastMessage2!=0 )
                     {
                         System.out.println("System 2 Offline.");
+                        System.out.println("Restarting System 2...");
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                         processManager.initProcessB(1);
                     }
 
@@ -52,33 +63,37 @@ public class MainServer {
                 }
             }
         });
-
+        thread.setDaemon(true);
         thread.start();
-        //thread.interrupt();
+
         processManager.initProcessA(0);
         processManager.initProcessB(1);
-        //processManager.endAllProcesses();
-        //Create server socket for game.
-        List<ClientHandler> handlers = new ArrayList<ClientHandler>();
+
+        //List<ClientHandler> handlers = new ArrayList<ClientHandler>();
         ServerSocket serverSocket= null;
         try {
             serverSocket = new ServerSocket(6355);
 
             System.out.println("Listening for connections.....");
-            //Accept communication on socket
-            while (System.currentTimeMillis() - startTime < runTime) {
+
+            int count=0;
+            while (count!=5)
+            {
+                //Accept communication on socket
                 client = serverSocket.accept();
                 System.out.println("Connection established....");
+                count++;
 
                 //Input stream to read information from client
                 InputStream inputStream = client.getInputStream();
 
-                //Output stream to  send information to client
+                //Output stream to send information to client
                 OutputStream outputStream = client.getOutputStream();
                 ClientHandler clientHandler = new ClientHandler(client, inputStream, outputStream);
                 clientHandler.start();
-                handlers.add(clientHandler);
+                //handlers.add(clientHandler);
             }
+            processManager.endAllProcesses();
             System.out.println("Ending Server");
         }
         catch (IOException e)
@@ -86,22 +101,14 @@ public class MainServer {
             e.printStackTrace();
         } finally {
             try{
-                serverSocket.close();
-                for (ClientHandler c: handlers
-                     ) {
-                    c.interrupt();
-                }
+               serverSocket.close();
 
-                processManager.endAllProcesses();
-            }catch (IOException e)
+
+            }catch (Exception e)
             {
                 e.printStackTrace();
             }
         }
-
-        //manage the processes for active redundancy
-        //thread.interrupt();
-        //processManager.endAllProcesses();
 
     }
 }

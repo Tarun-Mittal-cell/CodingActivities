@@ -48,13 +48,13 @@ public class ObjectDetectionSystem {
         BufferedImage img = null;
         try {
             //load image
-            loadLargeImage();
+           // loadLargeImage();
             img = BufferedImageUtils.fromFile(path);
             detection = predictor.predict(img);
         } catch (IOException | TranslateException e) {
             e.printStackTrace();
         }
-        System.out.println(detection);
+       // System.out.println(detection);
     }
 
 
@@ -89,7 +89,7 @@ public class ObjectDetectionSystem {
             try {
                 BufferedImage img = BufferedImageUtils.fromFile(path);
                 MainSystem.printMemory();
-                System.out.println("--done--");
+                //System.out.println("--done--");
             }
             catch (Exception e){
                 error = true;

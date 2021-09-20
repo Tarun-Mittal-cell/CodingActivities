@@ -5,12 +5,14 @@ public class ClientHandler extends Thread {
     private final InputStream inputStream  ;
     private final OutputStream outputStream;
     private final Socket client;
+    private boolean end;
 
     public ClientHandler(Socket client, InputStream inputStream , OutputStream outputStream)
     {
         this.client=client;
         this.outputStream=outputStream;
         this.inputStream=inputStream;
+        end=false;
     }
 
     @Override
@@ -23,9 +25,10 @@ public class ClientHandler extends Thread {
         PrintWriter printWriter = new PrintWriter(outputStream, true);
 
         String line = null;
+        String index=null;
         try {
-            line = reader.readLine();
-            String index=line.split(" ")[0];
+            /*line = reader.readLine();
+            String index=line.split(" ")[1];
             if(index.equals("1"))
             {
                 Control.lastMessage1 = System.currentTimeMillis();
@@ -33,32 +36,24 @@ public class ClientHandler extends Thread {
             else
             {
                 Control.lastMessage2 = System.currentTimeMillis();
-            }
+            }*/
 
-            boolean finished = false;
-            while (!finished) {
-
-                if (line.equals("finished")) {
-                    finished = true;
-                }
+            while (!end)
+            {
+                line = reader.readLine();
                 System.out.println("Client Sent: " + line);
-                if (!finished) {
-                    line = reader.readLine();
-                    index=line.split(" ")[0];
-                    if(index.equals("1"))
-                    {
-                        Control.lastMessage1 = System.currentTimeMillis();
-                    }
-                    else if(index.equals("2"))
-                    {
-                        Control.lastMessage2 = System.currentTimeMillis();
-                    }
+                index = line.split(" ")[1];
+                if (index.equals("1")) {
+                    Control.lastMessage1 = System.currentTimeMillis();
+                } else if (index.equals("2")) {
+                    Control.lastMessage2 = System.currentTimeMillis();
                 }
 
             }
         } catch (Exception e)
         {
-            e.printStackTrace();
+            //e.printStackTrace();
+            System.out.println("Connection Lost...");
         }
         finally {
             try {
@@ -76,5 +71,10 @@ public class ClientHandler extends Thread {
                 System.out.println("Error closing resources.");
             }
         }
+    }
+    public void stopThread()
+    {
+        end = true;
+        System.out.println(Thread.currentThread().getName()+ " Ended");
     }
 }

@@ -25,9 +25,9 @@ public class MainSystem {
         long currentUsedMemory = heapMemoryUsage.getUsed();
         if(currentUsedMemory>thresholdMemoryUsage){
             int percentage = (int)((100*heapMemoryUsage.getUsed())/heapMemoryUsage.getMax());
-            String output = "Heartbeat >> " + currentUsedMemory + " >> " + percentage + "%";
-            System.out.println(output);
-            faultLogger.logFault(output);
+           String output = "Heartbeat >> " + currentUsedMemory + " >> " + percentage + "%";
+           System.out.println(output);
+           faultLogger.logFault(output);
         }
     }
 
