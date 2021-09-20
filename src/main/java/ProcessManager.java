@@ -70,7 +70,7 @@ public class ProcessManager {
     }
 
     public void endAllProcesses(){
-        System.out.println("ending things");
+        System.out.println("Ending Processes...");
         for(int index = 0; index < processes.length; index++){
             if(processes[index] != null){
                 if(processes[index].isAlive()){

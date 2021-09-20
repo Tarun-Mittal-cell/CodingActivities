@@ -46,14 +46,12 @@ public class ObjectDetectionSystem {
     public void detect(Path path) {
         DetectedObjects detection = null;
         BufferedImage img = null;
-        try {
-
-            img = BufferedImageUtils.fromFile(path);
+        try {img = BufferedImageUtils.fromFile(path);
             detection = predictor.predict(img);
         } catch (IOException | TranslateException e) {
             e.printStackTrace();
         }
-       //System.out.println(detection);
+       System.out.println(detection);
     }
 
 

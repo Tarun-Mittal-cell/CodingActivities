@@ -81,8 +81,8 @@ public class ObjectDetectionClientA {
         thread.start();
 
         Random random=new Random();
-        int max=20;
-        int min= 10;
+        int max=12;
+        int min= 8;
         int bufferSize=random.nextInt(max - min + 1) + min;
         buffer=new String[bufferSize];
 
@@ -100,11 +100,7 @@ public class ObjectDetectionClientA {
             buffer[index]=frame;
             index++;
             detectionSystem.detect(Paths.get("src/main/java/frames/"+frame));
-            /*counter++;
-            if(counter==20)
-            {
-                counter=counter/0;
-            }*/
+
         }
 
     }

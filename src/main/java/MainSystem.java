@@ -1,18 +1,13 @@
 
-import javax.management.ObjectName;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainSystem {
 
     public static ProcessManager processManager;
 
     public static void main(String[] args) {
-        long startTime = System.currentTimeMillis();
-        long runTime = 5000; //number of seconds before a graceful shutdown of the whole system
 
         String line;
         BufferedReader reader=null;
@@ -93,7 +88,7 @@ public class MainSystem {
                 clientHandler.start();
             }
             processManager.endAllProcesses();
-            System.out.println("Ending Server");
+            System.out.println("Ending Server...");
         }
         catch (IOException e)
         {

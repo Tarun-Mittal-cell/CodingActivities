@@ -6,14 +6,14 @@ Control.java
  Control
 ClientHandler.java
  ClientHandler
+MainSystem.java
+ MainSystem
+ MainSystem$1
 ObjectDetectionClientB.java
  ObjectDetectionClientB
  ObjectDetectionClientB$1
 ObjectDetectionSystem.java
  ObjectDetectionSystem
-MainSystem.java
- MainSystem
- MainSystem$1
 ObjectDetectionClientA.java
  ObjectDetectionClientA
  ObjectDetectionClientA$1
