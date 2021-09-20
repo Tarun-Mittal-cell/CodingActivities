@@ -5,10 +5,11 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.file.Paths;
+import java.util.Random;
 
 public class ObjectDetectionClientA {
     private static int counter = 1;
-
+    private static String[] buffer;
     public static void main(String[] args) {
 
         Thread thread = new Thread(new Runnable() {
@@ -18,6 +19,7 @@ public class ObjectDetectionClientA {
                 PrintWriter printWriter = null;
                 BufferedReader reader = null;
                 Socket socket = null;
+
                 try {
                     local = InetAddress.getLocalHost();
                 } catch (UnknownHostException e) {
@@ -78,6 +80,12 @@ public class ObjectDetectionClientA {
         thread.setDaemon(true);
         thread.start();
 
+        Random random=new Random();
+        int max=20;
+        int min= 10;
+        int bufferSize=random.nextInt(max - min + 1) + min;
+        buffer=new String[bufferSize];
+
        //Create Directory to video frames.
         File file=new File("src/main/java/frames/");
         // Store picture names in  array
@@ -86,14 +94,17 @@ public class ObjectDetectionClientA {
 
         detectionSystem.configure();
         //
+        int index=0;
         for (String frame:frameFiles)
         {
+            buffer[index]=frame;
+            index++;
             detectionSystem.detect(Paths.get("src/main/java/frames/"+frame));
-            counter++;
+            /*counter++;
             if(counter==20)
             {
                 counter=counter/0;
-            }
+            }*/
         }
 
     }

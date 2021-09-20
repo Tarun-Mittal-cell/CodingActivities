@@ -53,7 +53,7 @@ public class ObjectDetectionSystem {
         } catch (IOException | TranslateException e) {
             e.printStackTrace();
         }
-       // System.out.println(detection);
+       //System.out.println(detection);
     }
 
 

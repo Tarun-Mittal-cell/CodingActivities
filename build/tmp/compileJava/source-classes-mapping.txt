@@ -4,16 +4,16 @@ ProcessManager.java
  ProcessManager
 Control.java
  Control
-MainServer.java
- MainServer
- MainServer$1
+ClientHandler.java
+ ClientHandler
 ObjectDetectionClientB.java
  ObjectDetectionClientB
  ObjectDetectionClientB$1
 ObjectDetectionSystem.java
  ObjectDetectionSystem
-ClientHandler.java
- ClientHandler
+MainSystem.java
+ MainSystem
+ MainSystem$1
 ObjectDetectionClientA.java
  ObjectDetectionClientA
  ObjectDetectionClientA$1
